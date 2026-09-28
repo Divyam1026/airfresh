@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ambiscenta — Where Fragrance Meets Ambience</title>
+<meta name="description" content="Ambiscenta — hand-poured room fresheners." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080705;--cream:#f6f1e2;--cream-dim:rgba(246,241,226,.6);
+    --ink:#0d0b08;--gold:#c9a86a;--gold-bright:#eccf8f;--gold-deep:#8a6f45;
+    --glass:rgba(246,241,226,.05);--glass-border:rgba(201,168,106,.16);
+    --glass-border-hi:rgba(236,207,143,.5);--line:rgba(246,241,226,.08);
+    --err:#e08888;--ok:#8dc88d;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--cream);font-family:'Inter',sans-serif;font-weight:300;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh;position:relative}
+
+  /* ===== global image safety ===== */
+  img{max-width:100%;height:auto;display:block}
+  .card,.card-art,.story-art,.hero-art,.cart-item,.hero-bottle,.story-art img{min-width:0;min-height:0}
+
+  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 60% at 10% 5%,rgba(201,168,106,.20),transparent 55%),radial-gradient(ellipse 70% 60% at 90% 25%,rgba(138,111,69,.24),transparent 55%),radial-gradient(ellipse 100% 70% at 50% 105%,rgba(201,168,106,.13),transparent 60%);filter:blur(30px);animation:aurora 26s ease-in-out infinite alternate}
+  body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background-image:linear-gradient(rgba(246,241,226,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(246,241,226,.022) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse at 50% 35%,black 25%,transparent 78%);-webkit-mask-image:radial-gradient(ellipse at 50% 35%,black 25%,transparent 78%)}
+  @keyframes aurora{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-3%,2%) scale(1.1)}100%{transform:translate(3%,-2%) scale(1.04)}}
+
+  h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:400;letter-spacing:.01em;color:var(--cream)}
+  a{color:inherit}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(8,7,5,.55);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);border-bottom:1px solid transparent;transition:border-color .35s,padding .35s,background .35s}
+  nav.scrolled{border-bottom-color:var(--line);padding:14px 5vw;background:rgba(8,7,5,.85)}
+  .brand{display:flex;align-items:center;gap:16px;font-family:'Cormorant Garamond',serif;font-size:clamp(20px,2vw,24px);letter-spacing:.45em;text-transform:uppercase;font-weight:500;color:var(--cream);text-decoration:none;cursor:pointer}
+  .brand svg{width:46px;height:46px;flex:0 0 auto;filter:drop-shadow(0 0 16px rgba(236,207,143,.45))}
+  .nav-links{display:flex;gap:38px;align-items:center}
+  .nav-links a{color:var(--cream-dim);text-decoration:none;font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:.34em;text-transform:uppercase;font-weight:400;transition:color .3s;position:relative;cursor:pointer;padding:8px 0}
+  .nav-links a::after{content:'';position:absolute;bottom:2px;left:50%;right:50%;height:1px;background:var(--gold-bright);transition:left .4s,right .4s;box-shadow:0 0 10px var(--gold-bright)}
+  .nav-links a:hover,.nav-links a.active{color:var(--cream)}
+  .nav-links a:hover::after,.nav-links a.active::after{left:0;right:0}
+  .nav-actions{display:flex;align-items:center;gap:16px}
+  .cart-btn{background:var(--glass);border:1px solid var(--glass-border);padding:11px 24px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;color:var(--cream);transition:all .35s;position:relative;backdrop-filter:blur(10px)}
+  .cart-btn:hover{border-color:var(--glass-border-hi);background:rgba(201,168,106,.14);box-shadow:0 0 30px rgba(236,207,143,.28)}
+  .cart-count{position:absolute;top:-9px;right:-9px;background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:var(--ink);font-size:10px;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;font-weight:600;box-shadow:0 0 14px var(--gold-bright)}
+  .cart-count.on{display:flex}
+  .menu-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px}
+  .menu-toggle span{display:block;width:24px;height:1.5px;background:var(--cream);margin:5px 0;transition:.3s}
+
+  /* BUTTONS */
+  .btn{display:inline-flex;align-items:center;gap:14px;padding:20px 44px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:400;text-decoration:none;cursor:pointer;transition:all .4s;border:1px solid transparent;background:none;color:var(--cream);position:relative;overflow:hidden}
+  .btn-primary{background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:var(--ink);font-weight:500;box-shadow:0 10px 40px -10px rgba(236,207,143,.6)}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 50px -10px rgba(236,207,143,.85)}
+  .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .btn-ghost{border-color:var(--glass-border);backdrop-filter:blur(10px);background:var(--glass)}
+  .btn-ghost:hover{border-color:var(--glass-border-hi);background:rgba(201,168,106,.12);transform:translateY(-2px)}
+  .btn svg{width:16px;height:16px}
+
+  .eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);font-weight:400;margin-bottom:28px;display:flex;align-items:center;gap:16px}
+  .eyebrow::before{content:'';width:40px;height:1px;background:linear-gradient(90deg,var(--gold-bright),transparent)}
+  .eyebrow.center{justify-content:center}
+  .eyebrow.center::after{content:'';width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-bright))}
+
+  .route-bar{position:fixed;top:0;left:0;height:2px;z-index:200;background:linear-gradient(90deg,var(--gold-bright),var(--gold-deep));box-shadow:0 0 24px var(--gold-bright);width:0;opacity:0;transition:width .5s ease,opacity .4s ease}
+  .route-bar.on{opacity:1}
+  .route-bar.done{width:100%;opacity:0;transition:width .3s ease,opacity .5s ease .3s}
+
+  .page{display:none;position:relative;z-index:2}
+  .page.active{display:block}
+  .page.transition-in{animation:pageIn .7s cubic-bezier(.2,.8,.2,1) forwards}
+  @keyframes pageIn{from{opacity:0;transform:translateY(28px);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
+  .page.transition-out{animation:pageOut .35s ease forwards}
+  @keyframes pageOut{to{opacity:0;transform:translateY(-14px);filter:blur(4px)}}
+
+  /* HERO */
+  .hero{min-height:100vh;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;padding:150px 5vw 80px;position:relative;overflow:hidden;gap:30px}
+  .hero-copy{position:relative;z-index:2;max-width:680px;min-width:0}
+  .hero h1{font-size:clamp(58px,8.2vw,124px);line-height:.94;letter-spacing:-.02em;margin-bottom:34px;background:linear-gradient(180deg,var(--cream) 25%,var(--gold-bright) 130%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero h1 em{font-style:italic;font-weight:300;background:linear-gradient(180deg,var(--gold-bright),var(--gold-deep));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lede{font-size:17.5px;color:var(--cream-dim);max-width:520px;margin-bottom:52px;line-height:1.85;font-weight:300}
+  .cta-row{display:flex;gap:18px;flex-wrap:wrap}
+
+  /* HERO ART — fixed so bottle stays inside */
+  .hero-art{
+    position:relative;z-index:1;
+    display:flex;align-items:center;justify-content:center;
+    min-height:640px;
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+    padding:40px;
+  }
+  .orb{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:min(680px,90%);
+    max-width:100%;
+    aspect-ratio:1/1;
+    border-radius:50%;
+    background:radial-gradient(circle at 40% 35%,rgba(236,207,143,.42),transparent 60%),radial-gradient(circle at 65% 70%,rgba(138,111,69,.4),transparent 55%);
+    filter:blur(60px);
+    animation:pulse 8s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.9}50%{transform:translate(-50%,-50%) scale(1.1);opacity:1}}
+  .ring{
+    position:absolute;top:50%;left:50%;
+    width:min(620px,85%);
+    max-width:100%;
+    aspect-ratio:1/1;
+    border-radius:50%;
+    border:1px solid rgba(236,207,143,.20);
+    animation:spin 34s linear infinite;
+    pointer-events:none;
+    transform-origin:center;
+    margin-top:-1px; margin-left:-1px;
+  }
+  .ring:nth-of-type(2){width:min(520px,72%);border-color:rgba(236,207,143,.11);animation-duration:24s;animation-direction:reverse}
+  .ring:nth-of-type(3){width:min(430px,58%);border-color:rgba(236,207,143,.07);animation-duration:18s}
+  .ring::after{content:'';position:absolute;top:-5px;left:50%;width:10px;height:10px;border-radius:50%;background:var(--gold-bright);box-shadow:0 0 22px var(--gold-bright),0 0 44px var(--gold-bright);transform:translateX(-50%)}
+  @keyframes spin{
+    from{transform:translate(-50%,-50%) rotate(0deg)}
+    to{transform:translate(-50%,-50%) rotate(360deg)}
+  }
+  .hero-bottle{
+    width:auto;
+    height:auto;
+    max-width:min(420px,72%);
+    max-height:100%;
+    object-fit:contain;
+    position:relative;z-index:3;
+    filter:drop-shadow(0 50px 100px rgba(236,207,143,.45)) drop-shadow(0 0 70px rgba(236,207,143,.35));
+    animation:float 8s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-26px)}}
+  .particle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--gold-bright);opacity:.55;box-shadow:0 0 10px var(--gold-bright);pointer-events:none;animation:drift linear infinite}
+  @keyframes drift{from{transform:translateY(0) translateX(0);opacity:.55}to{transform:translateY(-120px) translateX(30px);opacity:0}}
+
+  .ticker{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0;overflow:hidden;white-space:nowrap;background:rgba(8,7,5,.4);position:relative;z-index:2}
+  .ticker-track{display:inline-block;animation:scroll 44s linear infinite}
+  .ticker span{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;letter-spacing:.24em;color:var(--cream-dim);margin:0 50px}
+  .ticker span::after{content:'✦';margin-left:50px;color:var(--gold-bright);font-style:normal;font-size:13px;text-shadow:0 0 10px var(--gold-bright)}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  section.block{padding:140px 5vw;position:relative}
+  .section-head{max-width:840px;margin-bottom:80px}
+  .section-head h2{font-size:clamp(44px,6vw,80px);line-height:1.02;margin-bottom:24px}
+  .section-head h2 em{font-style:italic;font-weight:300;color:var(--gold-bright)}
+  .section-head p{color:var(--cream-dim);font-size:16.5px;max-width:620px;font-weight:300;line-height:1.8}
+  .section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+  .section-head.center p{margin:0 auto}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px}
+  .card{background:linear-gradient(165deg,rgba(246,241,226,.055),rgba(246,241,226,.012));border:1px solid var(--glass-border);border-radius:10px;overflow:hidden;transition:transform .55s cubic-bezier(.2,.8,.2,1),box-shadow .55s,border-color .55s;display:flex;flex-direction:column;cursor:pointer;backdrop-filter:blur(14px);position:relative}
+  .card:hover{transform:translateY(-12px);border-color:var(--glass-border-hi);box-shadow:0 40px 90px -30px rgba(236,207,143,.5),0 0 0 1px rgba(236,207,143,.2)}
+
+  /* CARD ART — fixed */
+  .card-art{
+    aspect-ratio:1/1;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+    padding:10%;
+    width:100%;
+    background:radial-gradient(circle at 50% 45%,rgba(201,168,106,.18),transparent 68%);
+  }
+  .card-art::after{
+    content:'';position:absolute;inset:0;
+    background-image:radial-gradient(rgba(236,207,143,.22) 1px,transparent 1px);
+    background-size:24px 24px;
+    mask-image:radial-gradient(circle at 50% 50%,black,transparent 72%);
+    -webkit-mask-image:radial-gradient(circle at 50% 50%,black,transparent 72%);
+    opacity:.5;pointer-events:none;
+  }
+  .card-art img{
+    width:100%;
+    height:100%;
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    position:relative;z-index:2;
+    transition:transform .7s cubic-bezier(.2,.8,.2,1);
+    filter:drop-shadow(0 24px 40px rgba(0,0,0,.55)) drop-shadow(0 0 36px rgba(236,207,143,.28));
+    animation:cardBob 7s ease-in-out infinite;
+  }
+  @keyframes cardBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .card:hover .card-art img{transform:scale(1.08) rotate(-2deg)}
+  .card-body{padding:34px 30px 30px;display:flex;flex-direction:column;flex:1;position:relative;z-index:2}
+  .card-tag{font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:.36em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+  .card h3{font-size:34px;margin-bottom:10px}
+  .card .notes{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--cream-dim);margin-bottom:16px}
+  .card .desc{font-size:14px;color:var(--cream-dim);opacity:.85;margin-bottom:24px;line-height:1.75}
+  .card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:22px;border-top:1px solid var(--line)}
+  .price{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--gold-bright)}
+  .add{background:transparent;border:1px solid var(--glass-border);color:var(--cream);padding:13px 26px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:all .35s}
+  .add:hover{background:var(--gold-bright);color:var(--ink);border-color:var(--gold-bright);box-shadow:0 0 30px rgba(236,207,143,.6);transform:scale(1.04)}
+
+  /* STORY — fixed */
+  .story{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center}
+  .story-art{
+    aspect-ratio:4/5;
+    border-radius:10px;
+    overflow:hidden;
+    width:100%;
+    max-width:100%;
+    background:linear-gradient(165deg,rgba(246,241,226,.055),rgba(246,241,226,.012));
+    border:1px solid var(--glass-border);
+    display:flex;align-items:center;justify-content:center;
+    padding:9%;
+    position:relative;
+    backdrop-filter:blur(12px);
+  }
+  .story-art::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 35% 30%,rgba(236,207,143,.26),transparent 58%);pointer-events:none}
+  .story-art img{
+    width:100%;height:100%;
+    max-width:100%;max-height:100%;
+    object-fit:contain;
+    position:relative;z-index:2;
+    filter:drop-shadow(0 40px 70px rgba(0,0,0,.55)) drop-shadow(0 0 50px rgba(201,168,106,.3));
+  }
+  .story-copy h2{font-size:clamp(42px,5vw,68px);line-height:1.02;margin-bottom:32px}
+  .story-copy h2 em{font-style:italic;font-weight:300;color:var(--gold-bright)}
+  .story-copy p{color:var(--cream-dim);margin-bottom:24px;font-size:16.5px;line-height:1.9}
+  .stats{display:flex;gap:70px;margin-top:56px;flex-wrap:wrap}
+  .stat .num{font-family:'Cormorant Garamond',serif;font-size:64px;line-height:1;color:var(--gold-bright);text-shadow:0 0 40px rgba(236,207,143,.4)}
+  .stat .lbl{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--cream-dim);margin-top:12px}
+
+  .values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px}
+  .value{padding:52px 40px;border-radius:10px;border:1px solid var(--glass-border);background:linear-gradient(165deg,rgba(246,241,226,.055),rgba(246,241,226,.012));backdrop-filter:blur(14px);transition:all .55s;position:relative;overflow:hidden}
+  .value::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-bright),transparent);opacity:0;transition:opacity .55s}
+  .value:hover{border-color:var(--glass-border-hi);transform:translateY(-8px);box-shadow:0 30px 80px -30px rgba(236,207,143,.4)}
+  .value:hover::before{opacity:1}
+  .value .num{font-family:'Cormorant Garamond',serif;font-size:56px;color:var(--gold-bright);line-height:1;font-style:italic;margin-bottom:22px}
+  .value h4{font-size:26px;margin-bottom:14px}
+  .value p{font-size:15px;color:var(--cream-dim);line-height:1.85}
+
+  .ritual-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:56px}
+  .step .idx{font-family:'Cormorant Garamond',serif;font-size:96px;line-height:1;font-style:italic;margin-bottom:22px;display:block;background:linear-gradient(180deg,var(--gold-bright),var(--gold-deep));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.92}
+  .step h4{font-size:28px;margin-bottom:16px}
+  .step p{font-size:15.5px;color:var(--cream-dim);line-height:1.9}
+
+  .contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:90px;align-items:start}
+  .contact-info h3{font-size:36px;margin-bottom:22px}
+  .contact-info>p{color:var(--cream-dim);font-size:16px;margin-bottom:44px;line-height:1.9}
+  .contact-row{display:flex;gap:22px;align-items:flex-start;margin-bottom:30px;padding-bottom:30px;border-bottom:1px solid var(--line)}
+  .contact-row:last-child{border-bottom:none}
+  .contact-row .ico{width:52px;height:52px;border-radius:50%;flex:0 0 auto;border:1px solid var(--glass-border);background:var(--glass);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);backdrop-filter:blur(10px);box-shadow:0 0 24px rgba(236,207,143,.12)}
+  .contact-row .ico svg{width:20px;height:20px}
+  .contact-row .meta strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:400;margin-bottom:8px}
+  .contact-row .meta span{font-size:16px;color:var(--cream)}
+
+  .contact-form{background:linear-gradient(165deg,rgba(246,241,226,.06),rgba(246,241,226,.015));border:1px solid var(--glass-border);border-radius:12px;padding:56px 48px;backdrop-filter:blur(16px);position:relative;overflow:hidden}
+  .contact-form::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-bright),transparent)}
+  .contact-form h3{font-size:32px;margin-bottom:10px}
+  .contact-form .sub{font-size:14.5px;color:var(--cream-dim);margin-bottom:36px}
+  .contact-form .field{margin-bottom:18px}
+  .contact-form input,.contact-form textarea,.contact-form select{width:100%;padding:18px 22px;background:rgba(8,7,5,.55);border:1px solid var(--glass-border);border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;color:var(--cream);outline:none;transition:border-color .3s,box-shadow .3s;font-weight:300;resize:vertical}
+  .contact-form textarea{min-height:130px}
+  .contact-form input::placeholder,.contact-form textarea::placeholder{color:rgba(246,241,226,.3)}
+  .contact-form input:focus,.contact-form textarea:focus,.contact-form select:focus{border-color:var(--gold-bright);box-shadow:0 0 0 4px rgba(236,207,143,.14),0 0 32px rgba(236,207,143,.24)}
+  .contact-form .row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+  .news{text-align:center;padding:160px 5vw;position:relative;overflow:hidden}
+  .news::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:900px;max-width:100vw;border-radius:50%;background:radial-gradient(circle,rgba(201,168,106,.18),transparent 60%);filter:blur(50px);pointer-events:none}
+  .news-inner{position:relative;z-index:2;max-width:720px;margin:0 auto}
+  .news h2{font-size:clamp(40px,5.4vw,72px);margin-bottom:26px;line-height:1.02}
+  .news h2 em{font-style:italic;font-weight:300;color:var(--gold-bright)}
+  .news p{color:var(--cream-dim);margin-bottom:48px;font-size:16.5px}
+  .news-form{display:flex;gap:12px;max-width:540px;margin:0 auto;flex-wrap:wrap}
+  .news-form input{flex:1;min-width:240px;padding:20px 28px;background:rgba(8,7,5,.6);border:1px solid var(--glass-border);border-radius:999px;font-family:'Inter',sans-serif;font-size:15px;color:var(--cream);outline:none;transition:border-color .3s,box-shadow .3s;font-weight:300}
+  .news-form input:focus{border-color:var(--gold-bright);box-shadow:0 0 32px rgba(236,207,143,.3)}
+  .news-form input::placeholder{color:rgba(246,241,226,.3)}
+  .news-form button{padding:20px 40px;border-radius:999px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:500;transition:transform .35s,box-shadow .35s}
+  .news-form button:hover{transform:translateY(-3px);box-shadow:0 18px 40px -10px rgba(236,207,143,.75)}
+
+  footer{background:rgba(4,3,1,.75);border-top:1px solid var(--line);padding:100px 5vw 50px;position:relative;z-index:2;backdrop-filter:blur(12px)}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:60px;padding-bottom:70px;border-bottom:1px solid var(--line)}
+  .foot-brand .brand{color:var(--cream);margin-bottom:26px}
+  .foot-brand p{font-size:14.5px;color:var(--cream-dim);max-width:320px;line-height:1.85}
+  .foot-col h5{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:var(--gold);font-weight:400;margin-bottom:26px}
+  .foot-col a{display:block;color:var(--cream-dim);text-decoration:none;font-size:14.5px;margin-bottom:14px;transition:color .3s,padding-left .3s;cursor:pointer}
+  .foot-col a:hover{color:var(--gold-bright);padding-left:8px}
+  .foot-bottom{padding-top:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;font-size:12.5px;color:var(--cream-dim);font-family:'Space Grotesk',sans-serif;letter-spacing:.14em}
+  .foot-bottom .socials{display:flex;gap:28px}
+  .foot-bottom .socials a{color:var(--cream-dim);text-decoration:none;transition:color .3s}
+  .foot-bottom .socials a:hover{color:var(--gold-bright)}
+
+  .drawer-bg{position:fixed;inset:0;background:rgba(4,3,1,.75);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .4s;z-index:200}
+  .drawer-bg.on{opacity:1;pointer-events:auto}
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:min(460px,100%);background:linear-gradient(165deg,#15130d,#080705);z-index:201;transform:translateX(100%);transition:transform .5s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;border-left:1px solid var(--glass-border);box-shadow:-40px 0 100px -25px rgba(0,0,0,.85)}
+  .drawer.on{transform:translateX(0)}
+  .drawer-head{padding:32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+  .drawer-head h3{font-size:30px}
+  .drawer-close{background:none;border:none;font-size:28px;cursor:pointer;color:var(--cream);padding:4px 10px;transition:color .3s}
+  .drawer-close:hover{color:var(--gold-bright)}
+  .drawer-body{flex:1;overflow-y:auto;padding:28px 32px}
+  .empty-cart{text-align:center;padding:80px 20px;color:var(--cream-dim);font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic}
+
+  .cart-item{display:flex;gap:18px;padding:22px 0;border-bottom:1px solid var(--line);align-items:center}
+  .cart-item .thumb{width:72px;height:72px;border-radius:8px;flex:0 0 auto;padding:7px;overflow:hidden;background:radial-gradient(circle,rgba(201,168,106,.16),transparent 72%);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center}
+  .cart-item .thumb img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain}
+  .cart-item .info{flex:1;min-width:0}
+  .cart-item .info h5{font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:6px}
+  .cart-item .info .p{font-size:13.5px;color:var(--gold-bright)}
+  .cart-item .qty{display:flex;align-items:center;gap:10px;margin-top:10px}
+  .cart-item .qty button{width:26px;height:26px;border-radius:50%;border:1px solid var(--glass-border);background:none;cursor:pointer;font-size:13px;color:var(--cream);display:flex;align-items:center;justify-content:center;transition:all .3s}
+  .cart-item .qty button:hover{background:var(--gold-bright);color:var(--ink);border-color:var(--gold-bright)}
+  .cart-item .qty span{font-size:14px;min-width:20px;text-align:center}
+  .cart-item .rm{background:none;border:none;cursor:pointer;color:var(--cream-dim);font-size:22px;transition:color .25s;padding:2px 8px;align-self:flex-start}
+  .cart-item .rm:hover{color:#c96a6a}
+  .drawer-foot{padding:28px 32px;border-top:1px solid var(--line);background:rgba(8,7,5,.65)}
+  .drawer-total{display:flex;justify-content:space-between;margin-bottom:22px;align-items:center}
+  .drawer-total .lbl{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--cream-dim)}
+  .drawer-total .val{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--gold-bright)}
+  .checkout{width:100%;padding:20px;border-radius:999px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:.3em;text-transform:uppercase;font-weight:500;transition:transform .35s,box-shadow .35s}
+  .checkout:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 18px 42px -10px rgba(236,207,143,.8)}
+  .checkout:disabled{opacity:.3;cursor:not-allowed}
+
+  .modal-bg{position:fixed;inset:0;background:rgba(4,3,1,.82);backdrop-filter:blur(10px);z-index:250;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-bg.on{display:flex}
+  .modal{background:linear-gradient(165deg,#15130d,#080705);border:1px solid var(--glass-border);border-radius:14px;max-width:520px;width:100%;padding:56px 48px;position:relative;max-height:90vh;overflow-y:auto;box-shadow:0 50px 120px -30px rgba(0,0,0,.95);animation:modalIn .5s cubic-bezier(.2,.8,.2,1)}
+  @keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
+  .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-bright),transparent)}
+  .modal-close{position:absolute;top:18px;right:22px;background:none;border:none;font-size:28px;cursor:pointer;color:var(--cream);transition:color .3s}
+  .modal-close:hover{color:var(--gold-bright)}
+  .modal-title{font-size:40px;margin-bottom:10px}
+  .modal .sub{font-size:14px;color:var(--cream-dim);margin-bottom:32px}
+  .modal input,.modal textarea{width:100%;padding:16px 20px;background:rgba(8,7,5,.55);border:1px solid var(--glass-border);border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;color:var(--cream);outline:none;margin-bottom:14px;transition:border-color .3s,box-shadow .3s;font-weight:300;resize:vertical}
+  .modal input:focus,.modal textarea:focus{border-color:var(--gold-bright);box-shadow:0 0 0 4px rgba(236,207,143,.14)}
+  .modal input::placeholder,.modal textarea::placeholder{color:rgba(246,241,226,.3)}
+  .modal textarea{min-height:90px}
+  .order-success{text-align:center;padding:28px 0;font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold-bright);display:none}
+  .order-success.on{display:block}
+  .order-success .ref{font-size:14px;color:var(--cream-dim);margin-top:14px;font-family:'Inter',sans-serif;letter-spacing:.05em}
+
+  .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:160px 5vw 80px;position:relative;z-index:2}
+  .auth-card{background:linear-gradient(165deg,rgba(246,241,226,.07),rgba(246,241,226,.015));border:1px solid var(--glass-border);border-radius:18px;padding:64px 54px;backdrop-filter:blur(18px);position:relative;overflow:hidden;max-width:520px;width:100%;box-shadow:0 40px 100px -30px rgba(0,0,0,.7)}
+  .auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-bright),transparent)}
+  .auth-card h2{font-size:clamp(38px,5vw,58px);line-height:1.02;margin-bottom:14px}
+  .auth-card h2 em{font-style:italic;font-weight:300;color:var(--gold-bright)}
+  .auth-card .sub{color:var(--cream-dim);margin-bottom:36px;font-size:15px;line-height:1.75}
+  .auth-card .field{margin-bottom:14px}
+  .auth-card input,.auth-card textarea{width:100%;padding:18px 24px;background:rgba(8,7,5,.55);border:1px solid var(--glass-border);border-radius:10px;font-family:'Inter',sans-serif;font-size:16px;color:var(--cream);outline:none;transition:border-color .3s,box-shadow .3s;font-weight:300;resize:vertical}
+  .auth-card input::placeholder,.auth-card textarea::placeholder{color:rgba(246,241,226,.3)}
+  .auth-card input:focus,.auth-card textarea:focus{border-color:var(--gold-bright);box-shadow:0 0 0 5px rgba(236,207,143,.14),0 0 36px rgba(236,207,143,.22)}
+  .auth-card input:disabled{opacity:.5;cursor:not-allowed}
+  .auth-row{display:flex;justify-content:space-between;align-items:center;margin:10px 0 22px;font-size:13.5px}
+  .check{display:flex;align-items:center;gap:10px;color:var(--cream-dim);cursor:pointer}
+  .check input{width:16px;height:16px;accent-color:var(--gold);padding:0;margin:0;flex:0 0 auto}
+  .link-gold{color:var(--gold-bright);text-decoration:none;transition:opacity .25s;cursor:pointer}
+  .link-gold:hover{opacity:.7}
+  .auth-switch{margin-top:28px;text-align:center;font-size:14px;color:var(--cream-dim)}
+  .auth-switch a{color:var(--gold-bright);font-weight:500;text-decoration:none;cursor:pointer}
+  .auth-switch a:hover{text-decoration:underline}
+  .auth-error,.auth-success{font-size:13.5px;margin-top:16px;text-align:center;display:none;padding:12px 16px;border-radius:8px}
+  .auth-error{color:var(--err);background:rgba(224,136,136,.08);border:1px solid rgba(224,136,136,.25)}
+  .auth-error.on{display:block}
+  .auth-success{color:var(--ok);background:rgba(141,200,141,.08);border:1px solid rgba(141,200,141,.25)}
+  .auth-success.on{display:block}
+
+  .account-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+  .account-card{background:linear-gradient(165deg,rgba(246,241,226,.055),rgba(246,241,226,.012));border:1px solid var(--glass-border);border-radius:14px;padding:44px 38px;backdrop-filter:blur(14px)}
+  .account-card h3{font-size:28px;margin-bottom:6px}
+  .account-card .sub{color:var(--cream-dim);font-size:14px;margin-bottom:28px}
+  .account-card .field{margin-bottom:14px}
+  .account-card input,.account-card textarea{width:100%;padding:15px 20px;background:rgba(8,7,5,.5);border:1px solid var(--glass-border);border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;color:var(--cream);outline:none;transition:border-color .3s;font-weight:300;resize:vertical}
+  .account-card input:focus,.account-card textarea:focus{border-color:var(--gold-bright);box-shadow:0 0 0 4px rgba(236,207,143,.12)}
+  .account-card input::placeholder,.account-card textarea::placeholder{color:rgba(246,241,226,.3)}
+  .account-card input:disabled{opacity:.5;cursor:not-allowed}
+  .order-item{padding:20px;border-radius:10px;border:1px solid var(--glass-border);background:rgba(8,7,5,.35);margin-bottom:12px}
+  .order-item .ref{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.2em;color:var(--gold-bright);margin-bottom:8px}
+  .order-item .meta{display:flex;justify-content:space-between;font-size:13.5px;color:var(--cream-dim);margin-bottom:10px;gap:14px;flex-wrap:wrap}
+  .order-item .status{color:var(--gold-bright);text-transform:uppercase;font-family:'Space Grotesk',sans-serif;font-size:10.5px;letter-spacing:.22em}
+  .order-item .lines{font-size:13px;color:var(--cream-dim);opacity:.85;line-height:1.7}
+  .empty-orders{text-align:center;padding:44px 20px;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--cream-dim);opacity:.6}
+
+  .toast{position:fixed;bottom:36px;left:50%;transform:translate(-50%,160%);background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:var(--ink);padding:16px 36px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-size:13px;letter-spacing:.16em;z-index:300;transition:transform .5s cubic-bezier(.2,.8,.2,1);box-shadow:0 24px 60px -12px rgba(236,207,143,.7);font-weight:500}
+  .toast.on{transform:translate(-50%,0)}
+
+  .reveal{opacity:0;transform:translateY(36px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal-d1{transition-delay:.08s}
+  .reveal-d2{transition-delay:.16s}
+  .reveal-d3{transition-delay:.24s}
+
+  @media (max-width:960px){
+    .hero{grid-template-columns:1fr;padding:150px 5vw 60px;gap:20px}
+    .hero-art{min-height:340px;order:-1;padding:20px}
+    .hero-bottle{max-width:min(260px,70%)}
+    .story,.contact-grid,.account-grid{grid-template-columns:1fr;gap:60px}
+    .story-art{padding:8%}
+    .foot-grid{grid-template-columns:1fr 1fr;gap:44px}
+    .nav-links{display:none;position:fixed;top:0;right:0;bottom:0;width:min(320px,84%);background:rgba(8,7,5,.98);backdrop-filter:blur(24px);flex-direction:column;justify-content:center;padding:90px 48px;gap:34px;transform:translateX(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);border-left:1px solid var(--glass-border)}
+    .nav-links.on{display:flex;transform:translateX(0)}
+    .nav-links a{font-size:15px}
+    .menu-toggle{display:block;z-index:150}
+    .cart-btn{margin-right:48px}
+    .contact-form .row{grid-template-columns:1fr}
+    .contact-form{padding:40px 28px}
+    .auth-card{padding:44px 28px}
+  }
+  @media (max-width:520px){
+    section.block{padding:90px 5vw}
+    .hero{padding:130px 5vw 50px}
+    .hero-art{min-height:280px;padding:14px}
+    .hero-bottle{max-width:min(220px,64%)}
+    .card-art{padding:8%}
+    .foot-grid{grid-template-columns:1fr}
+    .stat .num{font-size:48px}
+    .modal{padding:40px 26px}
+    .auth-wrap{padding-top:130px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body>
+
+<div class="route-bar" id="routeBar"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="brand" data-route="home">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#eccf8f"/><stop offset="100%" stop-color="#c9a86a"/></linearGradient></defs>
+      <path d="M14 82 L46 14 L78 82" stroke="url(#gA)" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M28 82 L46 40 L64 82" stroke="url(#gA)" stroke-width="3" stroke-linejoin="round" opacity=".55"/>
+      <path d="M52 30 C52 30 62 34 68 44 C76 58 70 76 58 80" stroke="url(#gA)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M56 46 q4 -6 0 -12 q-4 -6 0 -12" stroke="#eccf8f" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    Ambiscenta
+  </a>
+  <div class="nav-links" id="navLinks">
+    <a data-route="home">Home</a>
+    <a data-route="shop">Shop</a>
+    <a data-route="about">About</a>
+    <a data-route="contact">Contact</a>
+    <a data-route="account" id="accountNavLink">Sign In</a>
+  </div>
+  <div class="nav-actions">
+    <button class="cart-btn" id="cartBtn">Cart <span class="cart-count" id="cartCount">0</span></button>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<main class="page active" id="page-home">
+  <header class="hero">
+    <div class="hero-copy reveal">
+      <div class="eyebrow">Est. 2024 — Small Batch</div>
+      <h1>Turn a room<br>into a <em>feeling.</em></h1>
+      <p class="lede">Ambiscenta crafts slow-release room fresheners that don't just mask the air — they set the mood. Your space, rewritten in scent.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" data-route="shop">Shop the Collection
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" data-route="about">Our Story</a>
+      </div>
+    </div>
+    <div class="hero-art" id="heroArtHome">
+      <div class="orb"></div>
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+      <img src="" alt="Ambiscenta Rose Bloom" class="hero-bottle" onerror="this.style.opacity=.2">
+    </div>
+  </header>
+
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>Where Fragrance Meets Ambience</span><span>Slow Release</span><span>Hand Poured</span><span>Small Batch</span><span>Vegan &amp; Cruelty Free</span>
+      <span>Where Fragrance Meets Ambience</span><span>Slow Release</span><span>Hand Poured</span><span>Small Batch</span><span>Vegan &amp; Cruelty Free</span>
+    </div>
+  </div>
+
+  <section class="block">
+    <div class="section-head reveal">
+      <div class="eyebrow">The Collection</div>
+      <h2>A mood for <em>every room.</em></h2>
+      <p>Each scent is built around a single feeling — not a fragrance category.</p>
+    </div>
+    <div class="grid" id="featuredGrid"></div>
+    <div style="text-align:center;margin-top:72px">
+      <a class="btn btn-ghost" data-route="shop">View All Scents</a>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="section-head reveal">
+      <div class="eyebrow">The Ritual</div>
+      <h2>Three steps to<br>a <em>different room.</em></h2>
+    </div>
+    <div class="ritual-grid">
+      <div class="step reveal reveal-d1"><span class="idx">01</span><h4>Place</h4><p>Set the bottle where air moves — near a vent, a doorway, an open window.</p></div>
+      <div class="step reveal reveal-d2"><span class="idx">02</span><h4>Breathe</h4><p>Give it ten minutes. Ambiscenta builds slowly, not instantly. The room settles into it.</p></div>
+      <div class="step reveal reveal-d3"><span class="idx">03</span><h4>Return</h4><p>Come back an hour later. That's the scent you'll live with — quiet and entirely yours.</p></div>
+    </div>
+  </section>
+
+  <section class="news">
+    <div class="news-inner reveal">
+      <div class="eyebrow center">Stay in the Air</div>
+      <h2>New scents drop<br>before they <em>sell out.</em></h2>
+      <p>First access, small-batch restocks, and the occasional note on what we're building next.</p>
+      <form class="news-form" id="newsForm">
+        <input type="email" placeholder="your@email.com" required aria-label="Email" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<!-- SHOP -->
+<main class="page" id="page-shop">
+  <header class="hero" style="min-height:70vh;padding-bottom:40px">
+    <div class="hero-copy reveal">
+      <div class="eyebrow">The Collection</div>
+      <h1>The <em>Collection.</em></h1>
+      <p class="lede">Five moods. Hand-poured in small batches. Pick the one your room is missing.</p>
+    </div>
+    <div class="hero-art">
+      <div class="orb"></div><div class="ring"></div><div class="ring"></div>
+      <img src="images/amber.png" alt="" class="hero-bottle" onerror="this.style.display='none'">
+    </div>
+  </header>
+  <section class="block" style="padding-top:20px">
+    <div class="grid" id="shopGrid"></div>
+  </section>
+</main>
+
+<!-- ABOUT -->
+<main class="page" id="page-about">
+  <header class="hero" style="min-height:70vh;padding-bottom:40px">
+    <div class="hero-copy reveal">
+      <div class="eyebrow">Our Story</div>
+      <h1>Where fragrance<br>meets <em>ambience.</em></h1>
+      <p class="lede">Ambiscenta was born from a simple frustration: nothing on the shelf made a room feel right. So we made our own.</p>
+    </div>
+    <div class="hero-art">
+      <div class="orb"></div><div class="ring"></div><div class="ring"></div>
+      <img src="images/yellow.png" alt="" class="hero-bottle" onerror="this.style.display='none'">
+    </div>
+  </header>
+
+  <section class="block">
+    <div class="story">
+      <div class="story-art reveal"><img src="images/amber.png" alt="" onerror="this.style.display='none'"></div>
+      <div class="story-copy reveal reveal-d1">
+        <div class="eyebrow">The Beginning</div>
+        <h2>Born from a room<br>that felt <em>wrong.</em></h2>
+        <p>Ambiscenta started in a small apartment with bad lighting and worse air. We tried everything on the shelf — the sprays that hit like chemicals, the candles that smelled like nothing after ten minutes. Nothing set a mood.</p>
+        <p>So we built our own. Slow-release diffusers, essential-forward blends, designed around the feeling of a room rather than a fragrance chart. Every bottle is hand-poured, small batch, and made to disappear into the background — until you notice you don't want to leave.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="section-head center reveal">
+      <div class="eyebrow center">What We Stand For</div>
+      <h2>Small batch.<br>Real <em>ingredients.</em></h2>
+    </div>
+    <div class="values-grid">
+      <div class="value reveal reveal-d1"><div class="num">01</div><h4>Hand Poured</h4><p>Every bottle is filled, labeled, and checked by hand. No factories. No shortcuts.</p></div>
+      <div class="value reveal reveal-d2"><div class="num">02</div><h4>Slow Release</h4><p>Built to build — not hit. Our formulas live in a room for 40+ hours without fading.</p></div>
+      <div class="value reveal reveal-d3"><div class="num">03</div><h4>Clean Formula</h4><p>Vegan, cruelty-free, no synthetic musk. Only what needs to be there is there.</p></div>
+    </div>
+    <div class="stats" style="justify-content:center;margin-top:100px">
+      <div class="stat reveal"><div class="num">40+</div><div class="lbl">Hours per bottle</div></div>
+      <div class="stat reveal reveal-d1"><div class="num">100%</div><div class="lbl">Vegan formulas</div></div>
+      <div class="stat reveal reveal-d2"><div class="num">0</div><div class="lbl">Synthetic musk</div></div>
+    </div>
+  </section>
+</main>
+
+<!-- CONTACT -->
+<main class="page" id="page-contact">
+  <header class="hero" style="min-height:65vh;padding-bottom:40px">
+    <div class="hero-copy reveal">
+      <div class="eyebrow">Say Hello</div>
+      <h1>Get in <em>touch.</em></h1>
+      <p class="lede">Questions, wholesale, custom scents — we read every message.</p>
+    </div>
+    <div class="hero-art">
+      <div class="orb"></div><div class="ring"></div><div class="ring"></div>
+      <img src="images/clear.png" alt="" class="hero-bottle" onerror="this.style.display='none'">
+    </div>
+  </header>
+
+  <section class="block">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>We're listening.</h3>
+        <p>Whether it's a bulk order, a scent you wish existed, or just a note — drop it here. We reply within a day.</p>
+        <div class="contact-row">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></div>
+          <div class="meta"><strong>Email</strong><span>hello@ambiscenta.com</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div class="meta"><strong>Phone</strong><span>+91 00000 00000</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="meta"><strong>Studio</strong><span>India — ships worldwide</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <div class="meta"><strong>Hours</strong><span>Mon–Sat · 10am – 7pm IST</span></div>
+        </div>
+      </div>
+      <form class="contact-form reveal reveal-d1" id="contactForm">
+        <h3>Send a message.</h3>
+        <p class="sub">We'll get back to you at the email you leave.</p>
+        <div class="row">
+          <div class="field"><input name="name" placeholder="Your name" required /></div>
+          <div class="field"><input name="email" type="email" placeholder="Email" required /></div>
+        </div>
+        <div class="field"><input name="subject" placeholder="Subject" /></div>
+        <div class="field">
+          <select name="topic">
+            <option value="">What's this about?</option>
+            <option>Product question</option>
+            <option>Wholesale / bulk</option>
+            <option>Custom scent</option>
+            <option>Press</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div class="field"><textarea name="message" placeholder="Your message…" required></textarea></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Send Message</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<!-- LOGIN -->
+<main class="page" id="page-login">
+  <section class="auth-wrap">
+    <form class="auth-card" id="loginForm">
+      <div class="eyebrow">Welcome back</div>
+      <h2>Sign <em>in.</em></h2>
+      <p class="sub">Enter your details to access your account.</p>
+      <div class="field"><input name="email" type="email" placeholder="Email" required /></div>
+      <div class="field"><input name="password" type="password" placeholder="Password" required /></div>
+      <div class="auth-row">
+        <label class="check"><input type="checkbox" name="remember" checked><span>Remember me</span></label>
+        <a data-route="forgot" class="link-gold">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Sign In</button>
+      <div class="auth-error" id="loginError"></div>
+      <div class="auth-switch">New here? <a data-route="signup">Create an account</a></div>
+    </form>
+  </section>
+</main>
+
+<!-- SIGNUP -->
+<main class="page" id="page-signup">
+  <section class="auth-wrap">
+    <form class="auth-card" id="signupForm">
+      <div class="eyebrow">Join us</div>
+      <h2>Create <em>account.</em></h2>
+      <p class="sub">Track orders, save your address, get first access.</p>
+      <div class="field"><input name="name" placeholder="Full name" /></div>
+      <div class="field"><input name="email" type="email" placeholder="Email" required /></div>
+      <div class="field"><input name="password" type="password" placeholder="Password (min 8 characters)" required minlength="8" /></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px">Create Account</button>
+      <div class="auth-error" id="signupError"></div>
+      <div class="auth-switch">Already have an account? <a data-route="login">Sign in</a></div>
+    </form>
+  </section>
+</main>
+
+<!-- FORGOT -->
+<main class="page" id="page-forgot">
+  <section class="auth-wrap">
+    <form class="auth-card" id="forgotForm">
+      <div class="eyebrow">Reset</div>
+      <h2>Forgot <em>password?</em></h2>
+      <p class="sub">Enter your email and we'll send a reset link.</p>
+      <div class="field"><input name="email" type="email" placeholder="Email" required /></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px">Send Reset Link</button>
+      <div class="auth-error" id="forgotError"></div>
+      <div class="auth-success" id="forgotSuccess"></div>
+      <div class="auth-switch"><a data-route="login">Back to sign in</a></div>
+    </form>
+  </section>
+</main>
+
+<!-- RESET -->
+<main class="page" id="page-reset">
+  <section class="auth-wrap">
+    <form class="auth-card" id="resetForm">
+      <div class="eyebrow">New password</div>
+      <h2>Set a <em>new one.</em></h2>
+      <p class="sub">Choose something strong. Minimum 8 characters.</p>
+      <div class="field"><input name="password" type="password" placeholder="New password" required minlength="8" /></div>
+      <div class="field"><input name="confirm" type="password" placeholder="Confirm password" required minlength="8" /></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px">Update Password</button>
+      <div class="auth-error" id="resetError"></div>
+      <div class="auth-success" id="resetSuccess"></div>
+      <div class="auth-switch"><a data-route="login">Back to sign in</a></div>
+    </form>
+  </section>
+</main>
+
+<!-- ACCOUNT -->
+<main class="page" id="page-account">
+  <header class="hero" style="min-height:55vh;padding-bottom:20px">
+    <div class="hero-copy reveal">
+      <div class="eyebrow">Your Account</div>
+      <h1>Hello, <em id="accountName">friend.</em></h1>
+      <p class="lede">Manage your details, view your orders, and keep track of what's on the way.</p>
+    </div>
+    <div class="hero-art">
+      <div class="orb"></div><div class="ring"></div><div class="ring"></div>
+      <img src="images/clear.png" alt="" class="hero-bottle" onerror="this.style.display='none'">
+    </div>
+  </header>
+  <section class="block" style="padding-top:40px">
+    <div class="account-grid">
+      <div class="account-card">
+        <h3>Profile</h3>
+        <p class="sub">Update your delivery details.</p>
+        <form id="profileForm">
+          <div class="field"><input name="name" placeholder="Full name" /></div>
+          <div class="field"><input name="email" placeholder="Email" disabled id="profileEmail" /></div>
+          <div class="field"><input name="phone" placeholder="Phone" /></div>
+          <div class="field"><textarea name="address" placeholder="Delivery address"></textarea></div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Save Changes</button>
+        </form>
+      </div>
+      <div class="account-card">
+        <h3>Order History</h3>
+        <p class="sub">Every order you've placed.</p>
+        <div id="orderList"><div class="empty-orders">Loading…</div></div>
+      </div>
+      <div class="account-card" style="grid-column:1/-1">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px">
+          <div>
+            <h3>Sign out</h3>
+            <p class="sub" style="margin-bottom:0">Sign out of your Ambiscenta account on this device.</p>
+          </div>
+          <button class="btn btn-ghost" id="logoutBtn">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="brand" data-route="home">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="gB" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#eccf8f"/><stop offset="100%" stop-color="#c9a86a"/></linearGradient></defs>
+          <path d="M14 82 L46 14 L78 82" stroke="url(#gB)" stroke-width="5" stroke-linejoin="round"/>
+          <path d="M28 82 L46 40 L64 82" stroke="url(#gB)" stroke-width="3" stroke-linejoin="round" opacity=".55"/>
+          <path d="M52 30 C52 30 62 34 68 44 C76 58 70 76 58 80" stroke="url(#gB)" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+        Ambiscenta
+      </a>
+      <p>Where fragrance meets ambience. Hand-poured, slow-release room fresheners built around a feeling.</p>
+    </div>
+    <div class="foot-col"><h5>Shop</h5><a data-route="shop">All Scents</a><a data-route="shop">Bestsellers</a><a data-route="shop">Gift Sets</a><a data-route="shop">Refills</a></div>
+    <div class="foot-col"><h5>Company</h5><a data-route="about">Our Story</a><a data-route="about">What We Stand For</a><a data-route="contact">Contact</a><a data-route="contact">Stockists</a></div>
+    <div class="foot-col"><h5>Account</h5><a data-route="login">Sign In</a><a data-route="signup">Create Account</a><a data-route="account">My Account</a><a data-route="forgot">Reset Password</a></div>
+  </div>
+  <div class="foot-bottom">
+    <div>© <span id="year"></span> Ambiscenta. All rights reserved.</div>
+    <div class="socials"><a href="#">Instagram</a><a href="#">Pinterest</a><a href="#">TikTok</a></div>
+  </div>
+</footer>
+
+<!-- DRAWER -->
+<div class="drawer-bg" id="drawerBg"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head"><h3>Your Cart</h3><button class="drawer-close" id="drawerClose">&times;</button></div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot">
+    <div class="drawer-total"><span class="lbl">Total</span><span class="val" id="cartTotal">$0.00</span></div>
+    <button class="checkout" id="checkoutBtn" disabled>Checkout</button>
+  </div>
+</aside>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-bg" id="checkoutModal">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div class="eyebrow">Checkout</div>
+    <h3 class="modal-title">Almost there.</h3>
+    <p class="sub">Enter your delivery details and we'll take it from here.</p>
+    <form id="checkoutForm">
+      <input name="name" placeholder="Full name" required />
+      <input name="email" type="email" placeholder="Email" required />
+      <input name="phone" placeholder="Phone" />
+      <textarea name="address" placeholder="Delivery address" required></textarea>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:12px">Place Order</button>
+    </form>
+    <div class="order-success" id="orderSuccess"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   AMBISCENTA — frontend only, no backend
+   Data saved to localStorage. Demo/prototype use.
+   ============================================================ */
+
+const PAGES = ['home','shop','about','contact','login','signup','forgot','reset','account'];
+
+/* ---------- PRODUCTS (edit here) ---------- */
+const PRODUCTS = [
+  { id:1, name:'Rose Bloom',     tag:'Floral · Soft',   notes:'Rose, peony, white musk',       description:'A room that feels freshly bloomed.',      price:34, image:'images/pink.png'   },
+  { id:2, name:'Amber Nocturne', tag:'Warm · Resinous', notes:'Amber, vanilla, soft leather',   description:'For late evenings and low light.',        price:36, image:'images/amber.png'  },
+  { id:3, name:'Crystal Air',    tag:'Fresh · Clean',   notes:'Bergamot, sea salt, white tea',  description:'Open the windows. Start something.',      price:30, image:'images/clear.png'  },
+  { id:4, name:'Golden Hour',    tag:'Bright · Warm',   notes:'Neroli, honey, sun-warmed wood', description:'The feeling of late afternoon light.',    price:32, image:'images/yellow.png' },
+  { id:5, name:'Blush Petal',    tag:'Sweet · Airy',    notes:'Cherry blossom, lychee, cotton', description:'Soft, clean, quiet — like fresh linen.',  price:30, image:'images/pink2.png'  }
+];
+
+/* ---------- storage helpers ---------- */
+const store = {
+  get(k, fallback) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; } catch { return fallback; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  del(k) { try { localStorage.removeItem(k); } catch {} }
+};
+
+/* ---------- tiny "hash" for passwords (demo only — NOT secure) ---------- */
+function weakHash(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0;
+  return 'h' + h.toString(16);
+}
+
+/* ---------- data stores ---------- */
+let USERS = store.get('amb_users', []);
+let ORDERS = store.get('amb_orders', []);
+let SESSION = store.get('amb_session', null);
+let cart = store.get('amb_cart', {});
+let currentUser = null;
+
+function saveUsers()   { store.set('amb_users', USERS); }
+function saveOrders()  { store.set('amb_orders', ORDERS); }
+function saveSession() { store.set('amb_session', SESSION); }
+function saveCart()    { store.set('amb_cart', cart); }
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+function showToast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => t.classList.remove('on'), 2600);
+}
+function showErr(el, msg) { el.textContent = msg; el.classList.add('on'); }
+function clearErr(el) { el.textContent = ''; el.classList.remove('on'); }
+
+/* ---------- particles ---------- */
+function spawnParticles(host) {
+  if (!host || host.dataset.particles) return;
+  for (let i = 0; i < 14; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 2 + Math.random() * 3;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = (5 + Math.random() * 90) + '%';
+    p.style.top = (20 + Math.random() * 70) + '%';
+    p.style.animationDuration = (7 + Math.random() * 8) + 's';
+    p.style.animationDelay = (Math.random() * 6) + 's';
+    host.appendChild(p);
+  }
+  host.dataset.particles = '1';
+}
+$$('.hero-art').forEach(spawnParticles);
+
+/* ---------- router ---------- */
+const routeBar = $('#routeBar');
+let currentRoute = 'home';
+let transitioning = false;
+
+function route(name, skipAnim) {
+  if (!PAGES.includes(name)) name = 'home';
+  if (name === 'account' && !currentUser) { showToast('Please sign in'); name = 'login'; }
+  if (name === currentRoute && !skipAnim) return;
+
+  const doSwap = () => {
+    $$('.page').forEach(p => p.classList.remove('active','transition-in','transition-out'));
+    const next = document.getElementById('page-' + name);
+    if (next) next.classList.add('active');
+    if (!skipAnim && next) next.classList.add('transition-in');
+    $$('.nav-links a').forEach(a => a.classList.toggle('active', a.dataset.route === name));
+    window.scrollTo({ top:0, behavior:'instant' });
+    if (location.hash !== '#' + name) history.pushState(null, '', '#' + name);
+    $('#navLinks').classList.remove('on');
+    currentRoute = name;
+    if (name === 'account' && currentUser) loadAccount();
+    requestAnimationFrame(() => {
+      $$('.page.active .hero-art').forEach(spawnParticles);
+      $$('.page.active .reveal:not(.in)').forEach(el => io.observe(el));
+    });
+  };
+
+  if (skipAnim || !$('.page.active')) { doSwap(); return; }
+  if (transitioning) return;
+  transitioning = true;
+  routeBar.classList.remove('done');
+  routeBar.classList.add('on');
+  routeBar.style.width = '40%';
+  const old = $('.page.active');
+  if (old) old.classList.add('transition-out');
+  setTimeout(() => { routeBar.style.width = '85%'; }, 130);
+  setTimeout(() => {
+    doSwap();
+    routeBar.classList.add('done');
+    routeBar.classList.remove('on');
+    setTimeout(() => { routeBar.classList.remove('done'); routeBar.style.width = '0'; }, 520);
+    transitioning = false;
+  }, 320);
+}
+window.addEventListener('hashchange', () => route(location.hash.slice(1) || 'home'));
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-route]');
+  if (el) { e.preventDefault(); route(el.dataset.route); }
+});
+
+/* ---------- products ---------- */
+function cardHTML(p) {
+  return `
+    <div class="card reveal">
+      <div class="card-art"><img src="${p.image}" alt="${p.name}" onerror="this.style.opacity=.2"></div>
+      <div class="card-body">
+        <div class="card-tag">${p.tag}</div>
+        <h3>${p.name}</h3>
+        <div class="notes">${p.notes}</div>
+        <div class="desc">${p.description}</div>
+        <div class="card-foot">
+          <div class="price">$${p.price.toFixed(2)}</div>
+          <button class="add" data-id="${p.id}">Add to Cart</button>
+        </div>
+      </div>
+    </div>`;
+}
+function renderFeatured() {
+  const grid = $('#featuredGrid');
+  grid.innerHTML = PRODUCTS.slice(0, 3).map(cardHTML).join('');
+  grid.querySelectorAll('.reveal').forEach(el => io.observe(el));
+}
+function renderShop() { $('#shopGrid').innerHTML = PRODUCTS.map(cardHTML).join(''); }
+
+/* ---------- cart ---------- */
+function cartCount() { return Object.values(cart).reduce((a,b) => a+b, 0); }
+function cartTotal() {
+  return Object.entries(cart).reduce((s,[id,q]) => {
+    const p = PRODUCTS.find(x => x.id == id);
+    return s + (p ? p.price * q : 0);
+  }, 0);
+}
+function updateCartUI() {
+  const c = cartCount();
+  const badge = $('#cartCount');
+  badge.textContent = c;
+  badge.classList.toggle('on', c > 0);
+  const body = $('#drawerBody');
+  const entries = Object.entries(cart);
+  if (!entries.length) {
+    body.innerHTML = '<div class="empty-cart">Nothing here yet.<br>Pick a mood.</div>';
+  } else {
+    body.innerHTML = entries.map(([id, qty]) => {
+      const p = PRODUCTS.find(x => x.id == id);
+      if (!p) return '';
+      return `
+        <div class="cart-item">
+          <div class="thumb"><img src="${p.image}" alt="" onerror="this.style.opacity=.2"></div>
+          <div class="info">
+            <h5>${p.name}</h5>
+            <div class="p">$${p.price.toFixed(2)}</div>
+            <div class="qty">
+              <button data-act="dec" data-id="${id}">−</button>
+              <span>${qty}</span>
+              <button data-act="inc" data-id="${id}">+</button>
+            </div>
+          </div>
+          <button class="rm" data-act="rm" data-id="${id}">&times;</button>
+        </div>`;
+    }).join('');
+  }
+  $('#cartTotal').textContent = '$' + cartTotal().toFixed(2);
+  $('#checkoutBtn').disabled = entries.length === 0;
+  saveCart();
+}
+document.addEventListener('click', e => {
+  const add = e.target.closest('.add');
+  if (add) {
+    const id = add.dataset.id;
+    cart[id] = (cart[id] || 0) + 1;
+    updateCartUI();
+    showToast(`${PRODUCTS.find(x => x.id == id).name} added`);
+    return;
+  }
+  const act = e.target.closest('[data-act]');
+  if (act) {
+    const { act: a, id } = act.dataset;
+    if (a === 'inc') cart[id] = (cart[id] || 0) + 1;
+    if (a === 'dec') { cart[id] = (cart[id] || 0) - 1; if (cart[id] <= 0) delete cart[id]; }
+    if (a === 'rm') delete cart[id];
+    updateCartUI();
+  }
+});
+
+/* ---------- drawer ---------- */
+const drawer = $('#drawer');
+const drawerBg = $('#drawerBg');
+function openDrawer() { drawer.classList.add('on'); drawerBg.classList.add('on'); }
+function closeDrawer() { drawer.classList.remove('on'); drawerBg.classList.remove('on'); }
+$('#cartBtn').addEventListener('click', openDrawer);
+$('#drawerClose').addEventListener('click', closeDrawer);
+drawerBg.addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDrawer(); closeModal(); } });
+
+/* ---------- checkout modal ---------- */
+const modal = $('#checkoutModal');
+function openModal() { modal.classList.add('on'); }
+function closeModal() { modal.classList.remove('on'); }
+$('#checkoutBtn').addEventListener('click', () => { if (cartCount() > 0) openModal(); });
+$('#modalClose').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+$('#checkoutForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const items = Object.entries(cart).map(([id, qty]) => {
+    const p = PRODUCTS.find(x => x.id == id);
+    return { id: parseInt(id,10), name: p.name, price: p.price, qty };
+  });
+  const ref = 'AMB-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2,6).toUpperCase();
+  const total = cartTotal();
+
+  ORDERS.push({
+    ref,
+    userId: currentUser ? currentUser.id : null,
+    items,
+    total,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    customer: {
+      name: fd.get('name'),
+      email: fd.get('email'),
+      phone: fd.get('phone'),
+      address: fd.get('address')
+    }
+  });
+  saveOrders();
+
+  const success = $('#orderSuccess');
+  success.innerHTML = `Order placed. Thank you.<div class="ref">Ref: ${ref} — Total: $${total.toFixed(2)}</div>`;
+  success.classList.add('on');
+  e.target.style.display = 'none';
+  cart = {};
+  updateCartUI();
+  setTimeout(() => {
+    closeModal();
+    success.classList.remove('on');
+    e.target.style.display = '';
+    e.target.reset();
+  }, 4000);
+});
+
+/* ---------- auth ---------- */
+function updateAuthUI() {
+  const link = $('#accountNavLink');
+  if (currentUser) {
+    link.textContent = currentUser.name ? currentUser.name.split(' ')[0] : 'Account';
+    link.dataset.route = 'account';
+  } else {
+    link.textContent = 'Sign In';
+    link.dataset.route = 'login';
+  }
+}
+
+function loadSession() {
+  if (SESSION && SESSION.userId) {
+    currentUser = USERS.find(u => u.id === SESSION.userId) || null;
+    if (!currentUser) { SESSION = null; saveSession(); }
+  } else currentUser = null;
+  updateAuthUI();
+}
+
+$('#loginForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = $('#loginError'); clearErr(err);
+  const fd = new FormData(e.target);
+  const email = String(fd.get('email')).toLowerCase().trim();
+  const password = String(fd.get('password'));
+
+  const user = USERS.find(u => u.email === email);
+  if (!user) return showErr(err, 'Invalid email or password');
+  if (user.hash !== weakHash(password)) return showErr(err, 'Invalid email or password');
+
+  currentUser = user;
+  SESSION = { userId: user.id, at: Date.now() };
+  saveSession();
+  updateAuthUI();
+  showToast(`Welcome back, ${user.name || user.email}`);
+  e.target.reset();
+  route('account');
+});
+
+$('#signupForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = $('#signupError'); clearErr(err);
+  const fd = new FormData(e.target);
+  const name = String(fd.get('name') || '').trim();
+  const email = String(fd.get('email')).toLowerCase().trim();
+  const password = String(fd.get('password'));
+
+  if (!/^\S+@\S+\.\S+$/.test(email)) return showErr(err, 'Please enter a valid email');
+  if (password.length < 8) return showErr(err, 'Password must be at least 8 characters');
+  if (USERS.find(u => u.email === email)) return showErr(err, 'Email already registered');
+
+  const user = {
+    id: Date.now(),
+    email,
+    name,
+    hash: weakHash(password),
+    phone: '',
+    address: '',
+    createdAt: new Date().toISOString()
+  };
+  USERS.push(user);
+  saveUsers();
+  currentUser = user;
+  SESSION = { userId: user.id, at: Date.now() };
+  saveSession();
+  updateAuthUI();
+  showToast('Account created. Welcome in.');
+  e.target.reset();
+  route('account');
+});
+
+$('#forgotForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = $('#forgotError'), ok = $('#forgotSuccess');
+  clearErr(err); ok.classList.remove('on');
+  const fd = new FormData(e.target);
+  const email = String(fd.get('email')).toLowerCase().trim();
+  const user = USERS.find(u => u.email === email);
+
+  const token = 'demo-' + Math.random().toString(36).slice(2,10);
+  if (user) {
+    user._resetToken = token;
+    user._resetExpires = Date.now() + 30*60*1000;
+    saveUsers();
+    ok.innerHTML = `Demo mode — no email is sent. <a class="link-gold" href="#reset?token=${token}" id="demoResetLink">Click here to reset your password</a>.`;
+  } else {
+    ok.textContent = "If that email exists, a reset link has been sent.";
+  }
+  ok.classList.add('on');
+  e.target.reset();
+});
+
+$('#resetForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = $('#resetError'), ok = $('#resetSuccess');
+  clearErr(err); ok.classList.remove('on');
+  const fd = new FormData(e.target);
+  const password = String(fd.get('password'));
+  const confirm = String(fd.get('confirm'));
+  if (password !== confirm) return showErr(err, 'Passwords do not match');
+  if (password.length < 8) return showErr(err, 'Password must be at least 8 characters');
+
+  const hashPart = location.hash.split('?')[1] || '';
+  const token = new URLSearchParams(hashPart).get('token');
+  if (!token) return showErr(err, 'Reset link invalid or missing');
+
+  const user = USERS.find(u => u._resetToken === token && u._resetExpires > Date.now());
+  if (!user) return showErr(err, 'Reset link expired or invalid');
+
+  user.hash = weakHash(password);
+  delete user._resetToken;
+  delete user._resetExpires;
+  saveUsers();
+
+  ok.textContent = 'Password updated. Redirecting to sign in…';
+  ok.classList.add('on');
+  e.target.reset();
+  setTimeout(() => route('login'), 1600);
+});
+
+function loadAccount() {
+  if (!currentUser) return;
+  $('#accountName').textContent = (currentUser.name || currentUser.email) + '.';
+  const pf = $('#profileForm');
+  pf.name.value = currentUser.name || '';
+  $('#profileEmail').value = currentUser.email || '';
+  pf.phone.value = currentUser.phone || '';
+  pf.address.value = currentUser.address || '';
+
+  const list = $('#orderList');
+  const mine = ORDERS.filter(o => o.userId === currentUser.id);
+  if (!mine.length) {
+    list.innerHTML = '<div class="empty-orders">No orders yet. Go pick a mood.</div>';
+    return;
+  }
+  list.innerHTML = mine.slice().reverse().map(o => `
+    <div class="order-item">
+      <div class="ref">${o.ref}</div>
+      <div class="meta">
+        <span>${new Date(o.createdAt).toLocaleDateString()}</span>
+        <span class="status">${o.status}</span>
+        <span>$${o.total.toFixed(2)}</span>
+      </div>
+      <div class="lines">${o.items.map(i => `${i.qty}× ${i.name}`).join(' · ')}</div>
+    </div>
+  `).join('');
+}
+
+$('#profileForm').addEventListener('submit', e => {
+  e.preventDefault();
+  if (!currentUser) return;
+  const fd = new FormData(e.target);
+  currentUser.name = fd.get('name') || '';
+  currentUser.phone = fd.get('phone') || '';
+  currentUser.address = fd.get('address') || '';
+  saveUsers();
+  updateAuthUI();
+  showToast('Profile saved');
+});
+
+$('#logoutBtn').addEventListener('click', () => {
+  currentUser = null;
+  SESSION = null;
+  saveSession();
+  updateAuthUI();
+  showToast('Signed out');
+  route('home');
+});
+
+$('#newsForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const email = e.target.querySelector('input').value;
+  const subs = store.get('amb_subs', []);
+  if (!subs.includes(email)) { subs.push(email); store.set('amb_subs', subs); }
+  showToast(`Welcome in — ${email}`);
+  e.target.reset();
+});
+
+$('#contactForm').addEventListener('submit', e => {
+  e.preventDefault();
+  showToast("Message sent. We'll reply soon.");
+  e.target.reset();
+});
+
+const nav = $('#nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
+$('#menuToggle').addEventListener('click', () => $('#navLinks').classList.toggle('on'));
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+}, { threshold: 0.1 });
+
+$('#year').textContent = new Date().getFullYear();
+
+renderFeatured();
+renderShop();
+loadSession();
+updateCartUI();
+route(location.hash.slice(1) || 'home', true);
+</script>
+</body>
+</html>
