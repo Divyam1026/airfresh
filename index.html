@@ -545,8 +545,12 @@
       <div class="story-copy reveal reveal-d1">
         <div class="eyebrow">The Beginning</div>
         <h2>Born from a room<br>that felt <em>wrong.</em></h2>
-        <p>Ambiscenta started in a small apartment with bad lighting and worse air. We tried everything on the shelf — the sprays that hit like chemicals, the candles that smelled like nothing after ten minutes. Nothing set a mood.</p>
-        <p>So we built our own. Slow-release diffusers, essential-forward blends, designed around the feeling of a room rather than a fragrance chart. Every bottle is hand-poured, small batch, and made to disappear into the background — until you notice you don't want to leave.</p>
+        <p>Every room has a feeling. Sometimes it feels fresh. Sometimes it feels dull. Sometimes you want it to feel calm or simply more like you.
+          We often underestimate how much a scent can change that feeling. A familiar scent can make a space feel comforting; a fresh fragrance can make it feel energised; a floral fragrance can make it feel softer and more welcoming.</p>
+        <p>AMBISCENTA was born from a simple observation, a room can be clean and still not feel like home. Hostel life strips away the small sensory details that make a space feel personal, the smell of your own space, not shared or institutional. We didn't want to build another air freshener; we wanted to build a way to reclaim your room in seconds. Every bottle carries a botanical stem inside, a visible promise that what you're spraying isn't synthetic filler, it's a small ritual of care.
+ Henceforth, instead of treating fragrance as something that only removes bad smells, AMBISCENTA turns it into an everyday way to shape your surroundings. Because you don't always need to change your room sometimes, you just need to change the atmosphere
+Our Brand Promise - A simple spray can change the atmosphere of a space and sometimes, the feeling of the moment.
+AMBISCENTA - Where Fragrance Meets Ambience</p>
       </div>
     </div>
   </section>
@@ -810,11 +814,11 @@ const PAGES = ['home','shop','about','contact','login','signup','forgot','reset'
 
 /* ---------- PRODUCTS (edit here) ---------- */
 const PRODUCTS = [
-  { id:1, name:'Rose Bloom',     tag:'Floral · Soft',   notes:'Rose, peony, white musk',       description:'A room that feels freshly bloomed.',      price:34, image:'images/pink.png'   },
-  { id:2, name:'Amber Nocturne', tag:'Warm · Resinous', notes:'Amber, vanilla, soft leather',   description:'For late evenings and low light.',        price:36, image:'images/amber.png'  },
-  { id:3, name:'Crystal Air',    tag:'Fresh · Clean',   notes:'Bergamot, sea salt, white tea',  description:'Open the windows. Start something.',      price:30, image:'images/clear.png'  },
-  { id:4, name:'Golden Hour',    tag:'Bright · Warm',   notes:'Neroli, honey, sun-warmed wood', description:'The feeling of late afternoon light.',    price:32, image:'images/yellow.png' },
-  { id:5, name:'Blush Petal',    tag:'Sweet · Airy',    notes:'Cherry blossom, lychee, cotton', description:'Soft, clean, quiet — like fresh linen.',  price:30, image:'images/pink2.png'  }
+  { id:1, name:'Rose Bloom',     tag:'Floral · Soft',   notes:'Rose, peony, white musk',       description:'A room that feels freshly bloomed.',      price:250, image:'images/rose.jpeg'   },
+  { id:2, name:'Amber Nocturne', tag:'Warm · Resinous', notes:'Amber, vanilla, soft leather',   description:'For late evenings and low light.',        price:250, image:'images/amber.jpeg'  },
+  { id:3, name:'Crystal Air',    tag:'Fresh · Clean',   notes:'Bergamot, sea salt, white tea',  description:'Open the windows. Start something.',      price:250, image:'images/crystal air.jpeg'  },
+  { id:4, name:'Golden Hour',    tag:'Bright · Warm',   notes:'Neroli, honey, sun-warmed wood', description:'The feeling of late afternoon light.',    price:250, image:'images/golden hour.jpeg' },
+  { id:5, name:'Blush Petal',    tag:'Sweet · Airy',    notes:'Cherry blossom, lychee, cotton', description:'Soft, clean, quiet — like fresh linen.',  price:250, image:'images/blush petel.jpeg'  }
 ];
 
 /* ---------- storage helpers ---------- */
@@ -846,6 +850,7 @@ function saveCart()    { store.set('amb_cart', cart); }
 /* ---------- helpers ---------- */
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
+const fmt = n => '₹' + Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 });
 
 function showToast(msg) {
   const t = $('#toast');
@@ -937,7 +942,7 @@ function cardHTML(p) {
         <div class="notes">${p.notes}</div>
         <div class="desc">${p.description}</div>
         <div class="card-foot">
-          <div class="price">$${p.price.toFixed(2)}</div>
+          <div class="price">${fmt(p.price)}</div>
           <button class="add" data-id="${p.id}">Add to Cart</button>
         </div>
       </div>
@@ -976,7 +981,7 @@ function updateCartUI() {
           <div class="thumb"><img src="${p.image}" alt="" onerror="this.style.opacity=.2"></div>
           <div class="info">
             <h5>${p.name}</h5>
-            <div class="p">$${p.price.toFixed(2)}</div>
+            <div class="p">${fmt(p.price)}</div>
             <div class="qty">
               <button data-act="dec" data-id="${id}">−</button>
               <span>${qty}</span>
@@ -987,7 +992,7 @@ function updateCartUI() {
         </div>`;
     }).join('');
   }
-  $('#cartTotal').textContent = '$' + cartTotal().toFixed(2);
+  $('#cartTotal').textContent =fmt(cartTotal());
   $('#checkoutBtn').disabled = entries.length === 0;
   saveCart();
 }
@@ -1055,7 +1060,7 @@ $('#checkoutForm').addEventListener('submit', e => {
   saveOrders();
 
   const success = $('#orderSuccess');
-  success.innerHTML = `Order placed. Thank you.<div class="ref">Ref: ${ref} — Total: $${total.toFixed(2)}</div>`;
+  success.innerHTML = `Order placed. Thank you.<div class="ref">Ref: ${ref} — Total: ${fmt(total)}</div>`;
   success.classList.add('on');
   e.target.style.display = 'none';
   cart = {};
@@ -1210,7 +1215,7 @@ function loadAccount() {
       <div class="meta">
         <span>${new Date(o.createdAt).toLocaleDateString()}</span>
         <span class="status">${o.status}</span>
-        <span>$${o.total.toFixed(2)}</span>
+        <span>${fmt(o.total)}</span>
       </div>
       <div class="lines">${o.items.map(i => `${i.qty}× ${i.name}`).join(' · ')}</div>
     </div>
